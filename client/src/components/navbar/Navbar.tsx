@@ -43,7 +43,7 @@ const Navbar = () => {
   const admin = true;
   const loading = false;
   return (
-    <div className="max-w-7xl bg-gray-100 mx-auto">
+    <div className="max-w-7xl mx-auto">
       <div className="flex items-center justify-between h-14">
         <Link to="/">
           <h1 className="font-semibold md:font-semibold text-2xl px-2">IXSN</h1>

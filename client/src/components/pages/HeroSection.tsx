@@ -1,7 +1,13 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Search } from "lucide-react";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../ui/button";
 
 const HeroSection: React.FC = () => {
+  const [searchText, setSearchText] = useState("");
+  const navigate = useNavigate();
+  // console.log(navigate);
+  
   return (
     <div className="flex flex-col md:flex-row max-w-7xl mx-auto md:p-10 rounded-lg items-center justify-center m-4 gap-20">
       <section className=" py-16">
@@ -41,6 +47,19 @@ const HeroSection: React.FC = () => {
               alt="Delicious Food"
               className="w-80 h-auto rounded-xl shadow-lg"
             />
+          </div>
+        </div>
+        <div className=" mt-10 flex justify-center">
+          <div className="relative items-center w-full max-w-xl flex gap-2 ">
+            <Search className="absolute  left-2 text-gray-500" />
+            <input
+              type="text"
+              placeholder="Search resturants..."
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-full shadow-md focus:outline-none focus:ring-1 focus:ring-orange-400 transition-all"
+            />
+            <Button onClick={() => navigate(`/search/${searchText}`)} className="ml-4 cursor-pointer bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-full transition">search</Button>
           </div>
         </div>
       </section>

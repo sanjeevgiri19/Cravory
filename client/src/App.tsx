@@ -8,6 +8,7 @@ import Login from "./auth/Login";
 import MainLayout from "./layout/MainLayout";
 import HeroSection from "./components/pages/HeroSection";
 import Profile from "./components/pages/Profile";
+import SearchPage from "./components/SearchPage";
 
 const appRouter = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const appRouter = createBrowserRouter([
         path: "/profile",
         element: <Profile />,
       },
+      {
+        path: "/search/:text",
+        element: <SearchPage />
+      }
     ],
   },
   {
