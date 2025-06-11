@@ -6,7 +6,6 @@ const HeroSection: React.FC = () => {
     <div className="flex flex-col md:flex-row max-w-7xl mx-auto md:p-10 rounded-lg items-center justify-center m-4 gap-20">
       <section className=" py-16">
         <div className="container mx-auto px-4 flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
-          {/* Text Content */}
           <div className="w-full lg:w-1/2 text-center lg:text-left">
             <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
               Delicious Food, <br className="hidden sm:block" />
@@ -36,10 +35,9 @@ const HeroSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Image */}
           <div className="w-full lg:w-1/2 flex justify-center">
             <img
-              src="/images/hero-food.png" // Replace with your image path
+              src="/images/hero-food.png" // needs bg image
               alt="Delicious Food"
               className="w-80 h-auto rounded-xl shadow-lg"
             />

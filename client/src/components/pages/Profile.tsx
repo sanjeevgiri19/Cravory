@@ -1,6 +1,13 @@
 import React, { useRef, useState, type FormEvent } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Loader2, LocateIcon, Mail, Map, MapPin, MapPinned, MapPinnedIcon, Plus } from "lucide-react";
+import {
+  Loader2,
+  LocateIcon,
+  Mail,
+  MapPin,
+  MapPinnedIcon,
+  Plus,
+} from "lucide-react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
@@ -22,9 +29,18 @@ const Profile = () => {
     city: "",
     profilePicture: "",
   });
+
+  // const [profileData, setProfileData] = useState<ProfileData>({
+  //   fullname: user?.fullname || "",
+  //   email: user?.email || "",
+  //   address: user?.address || "",
+  //   city: user?.city || "",
+  //   country: user?.country || "",
+  //   profilePicture: user?.profilePicture || "",
+  // });
   const imageRef = useRef<HTMLInputElement | null>(null);
   const [selectedProfilePic, setSelectedProfilePic] = useState<string>("");
-  const loading = false
+  const loading = false;
 
   const fileChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -52,7 +68,10 @@ const Profile = () => {
   };
 
   return (
-    <form onSubmit={updateProfileHandler} className="max-w-7xl h-screen mx-auto">
+    <form
+      onSubmit={updateProfileHandler}
+      className="max-w-7xl h-screen mx-auto"
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 ">
           <Avatar className="relative md:w-28 md:h-28 w-20 h-20">
@@ -140,11 +159,14 @@ const Profile = () => {
       <div className="text-center">
         {loading ? (
           <Button disabled className="bg-blue-500">
-            <Loader2  className="mr-2 w-4 h-4 animate-spin" />
+            <Loader2 className="mr-2 w-4 h-4 animate-spin" />
             Please wait
           </Button>
         ) : (
-          <Button type="submit" className="bg-blue-400 px-20  md:text-lg md:font-semibold  ">
+          <Button
+            type="submit"
+            className="bg-blue-400 px-20  md:text-lg md:font-semibold  "
+          >
             Update
           </Button>
         )}
