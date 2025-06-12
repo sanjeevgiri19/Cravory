@@ -9,6 +9,10 @@ import MainLayout from "./layout/MainLayout";
 import HeroSection from "./components/pages/HeroSection";
 import Profile from "./components/pages/Profile";
 import SearchPage from "./components/SearchPage";
+import ResturantDetails from "./components/ResturantDetails";
+import Cart from "./components/Cart";
+import Resturant from "./admin/Resturant";
+import AddMenu from "./admin/AddMenu";
 
 const appRouter = createBrowserRouter([
   {
@@ -26,6 +30,22 @@ const appRouter = createBrowserRouter([
       {
         path: "/search/:text",
         element: <SearchPage />
+      },
+      {
+        path: "/resturant/:id",
+        element: <ResturantDetails />
+      },
+       {
+        path: "/cart",
+        element: <Cart />
+       },
+      {
+        path: "/admin/resturant",
+        element: <Resturant/>
+
+      }, {
+        path: "/admin/menu",
+        element: <AddMenu />
       }
     ],
   },

@@ -43,8 +43,8 @@ const Navbar = () => {
   const admin = true;
   const loading = false;
   return (
-    <div className="max-w-7xl mx-auto">
-      <div className="flex items-center justify-between h-14">
+    <div className="max-w-7xl mx-auto bg-gray-100">
+      <div className="flex items-center justify-between h-16">
         <Link to="/">
           <h1 className="font-semibold md:font-semibold text-2xl px-2">IXSN</h1>
         </Link>
@@ -52,14 +52,20 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-10">
           {/* Menubar icons */}
           <div className="hidden md:flex items-center gap-6">
-            <Link to="/">Home</Link>
-            <Link to="/order/status">Order</Link>
-            <Link to="/profile">Profile</Link>
+            <Link to="/" className="text-lg">
+              Home
+            </Link>
+            <Link to="/order/status" className="text-lg ">
+              Order
+            </Link>
+            <Link to="/profile" className="text-lg ">
+              Profile
+            </Link>
 
             {admin && (
               <Menubar>
                 <MenubarMenu>
-                  <MenubarTrigger>DashBoard</MenubarTrigger>
+                  <MenubarTrigger className="text-md">DashBoard</MenubarTrigger>
                   <MenubarContent>
                     <Link to="/admin/resturant">
                       <MenubarItem>Resturant</MenubarItem>

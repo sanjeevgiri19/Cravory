@@ -54,7 +54,7 @@ const SearchPage = () => {
           </div>
 
           {/* Resturant cards  */}
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[1, 2, 3, 4].map((items: number, idx: number) => (
               <Card className="bg-white w-[90%] mx-auto md:w-full dark:bg-gray-800 shadow-xl rounded-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
                 <div className="relative">
@@ -113,62 +113,6 @@ const SearchPage = () => {
                 </CardFooter>
               </Card>
             ))}
-            <Card className="bg-white w-[90%] mx-auto md:w-full dark:bg-gray-800 shadow-xl rounded-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
-              <div className="relative">
-                <AspectRatio ratio={16 / 6}>
-                  <img
-                    src={ixsnlogo}
-                    className="w-full h-full object-cover"
-                    alt=""
-                  />
-                </AspectRatio>
-                <div className="absolute top-2 left-2 bg-gray-200 dark:bg-gray-700 bg-opacity-75 px-3 py-1 rounded-lg">
-                  <span className="text-md font-medium text-gray-700 dark:text-gray-300">
-                    Featured
-                  </span>
-                </div>
-              </div>
-              <CardContent className="p-2">
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 ">
-                  Pizza Hut
-                </h2>
-                <div className="flex items-center mt-1">
-                  <MapPin size={16} />
-                  <p className="text-gray-600 text-sm font-medium">
-                    {" "}
-                    City: <span className="font-semibold">Kathmandu</span>
-                  </p>
-                </div>
-                <div className="flex items-center mt-1">
-                  <Globe size={16} />
-                  <p className="text-gray-600 text-sm font-medium">
-                    {" "}
-                    Country: <span className="font-semibold">Nepal</span>
-                  </p>
-                </div>
-                <div className="flex gap-2 mt-3 flex-wrap">
-                  {["jalebi", "laddu", "thali"].map(
-                    (cuisine: string, idx: number) => (
-                      <div key={idx} className="">
-                        <Badge
-                          variant="default"
-                          className="px-3 py-1.5 font-medium  rounded-lg shadow-sm"
-                        >
-                          {cuisine}
-                        </Badge>
-                      </div>
-                    )
-                  )}
-                </div>
-              </CardContent>
-              <CardFooter className="flex border-t dark:border-t-gray-700 border-t-gray-200 text:white justify-end">
-                <Link to={`/resturant/${123}`} className="">
-                  <Button className="bg-orange-500 hover:bg-orange-600 font-semibold rounded-full shadow-md transition-colors duration-300 cursor-pointer">
-                    View Menu
-                  </Button>
-                </Link>
-              </CardFooter>
-            </Card>
           </div>
         </div>
       </div>
