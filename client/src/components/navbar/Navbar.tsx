@@ -202,7 +202,7 @@ const MobileNavbar = () => {
           {admin && (
             <>
               <Link
-                to="/admi/menu"
+                to="/admin/menu"
                 className="flex items-center gap-4 hover:bg-gray-300 px-3 py-2 rounded-lg cursor-pointer font-medium hover:text-gray-900"
               >
                 <SquareMenu />

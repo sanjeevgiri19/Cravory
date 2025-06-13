@@ -13,6 +13,8 @@ import ResturantDetails from "./components/ResturantDetails";
 import Cart from "./components/Cart";
 import Resturant from "./admin/Resturant";
 import AddMenu from "./admin/AddMenu";
+import Orders from "./admin/Orders";
+import OrderSuccess from "./components/OrderSuccess";
 
 const appRouter = createBrowserRouter([
   {
@@ -29,23 +31,32 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/search/:text",
-        element: <SearchPage />
+        element: <SearchPage />,
       },
       {
         path: "/resturant/:id",
-        element: <ResturantDetails />
+        element: <ResturantDetails />,
       },
-       {
+      {
         path: "/cart",
-        element: <Cart />
-       },
+        element: <Cart />,
+      },
+      {
+        path: "/order/status",
+        element:<OrderSuccess />
+      },
+      // admin 
       {
         path: "/admin/resturant",
-        element: <Resturant/>
-
-      }, {
+        element: <Resturant />,
+      },
+      {
         path: "/admin/menu",
-        element: <AddMenu />
+        element: <AddMenu />,
+      },
+      {
+        path: "/admin/orders",
+        element: <Orders />
       }
     ],
   },
