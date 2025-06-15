@@ -42,10 +42,11 @@ const HeroSection: React.FC = () => {
           </div>
 
           <div className="w-full lg:w-1/2 flex justify-center">
+            {/* https://www.pexels.com/photo/green-leafy-vegetable-dish-in-gray-steel-bowl-with-fork-842571/ */}
             <img
-              src="/images/hero-food.png" // needs bg image
+              src="https://images.pexels.com/photos/842571/pexels-photo-842571.jpeg"
               alt="Delicious Food"
-              className="w-80 h-auto rounded-xl shadow-lg"
+              className="w-80 h-80 object-cover rounded-full shadow-lg"
             />
           </div>
         </div>
@@ -59,7 +60,12 @@ const HeroSection: React.FC = () => {
               onChange={(e) => setSearchText(e.target.value)}
               className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-full shadow-md focus:outline-none focus:ring-1 focus:ring-orange-400 transition-all"
             />
-            <Button onClick={() => navigate(`/search/${searchText}`)} className="ml-4 cursor-pointer bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-full transition">search</Button>
+            <Button
+              onClick={() => navigate(`/search/${searchText}`)}
+              className="ml-4 cursor-pointer bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-full transition"
+            >
+              search
+            </Button>
           </div>
         </div>
       </section>
