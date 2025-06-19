@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { ref } from "process";
 
 export interface IRestaurant {
   user: mongoose.Schema.Types.ObjectId;
@@ -41,7 +40,7 @@ const resturantSchema = new mongoose.Schema<IRestaurantDocument>(
       required: true,
     },
     cuisines: [{ type: String, required: true }],
-    menus: [{ types: mongoose.Schema.Types.ObjectId, ref: "Menu" }],
+    menus: [{ type: mongoose.Schema.Types.ObjectId, ref: "Menu" }],
     imageUrl: {
       type: String,
       required: true,
