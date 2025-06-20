@@ -1,53 +1,15 @@
-// import { Input } from "@/components/ui/input";
-// import { useRef, useState } from "react";
-
-// const VerifyEmail = () => {
-//   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
-//   const inputRef = useRef<Array<HTMLInputElement | null>>([]);
-//   const loading = false;
-//   return (
-//     <div className="flex items-center justify-center h-screen w-full">
-//       <div className="flex flex-col md:border md:p-8 rounded-lg w-full max-w-md gap-8 ">
-//         <div className="text-center">
-//           <h1>verify your email</h1>
-//           <h3> Enter the 6 digit code sent to your email address</h3>
-//         </div>
-//         <form className="">
-//           <div className="">
-//             {otp.map((letter: string, idx: number) => (
-//               <Input
-//                 key={idx}
-//                 ref={(elem) => (inputRef.current[idx] = elem)}
-//                 type="text"
-//                 maxLength={1}
-//                 value={letter}
-//               />
-//             ))}
-//           </div>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default VerifyEmail;
-
-
-
-
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useUserStore } from "@/store/useUserStore";
 
 import { Loader2 } from "lucide-react";
-import {  useRef, useState } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 const VerifyEmail = () => {
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
-  const inputRef = useRef<any>([]);
-  // const { loading, verifyEmail } = useUserStore();
-  const loading = false
+  const inputRef = useRef<(HTMLInputElement | null)[]>([]);
+  const { verifyEmail, loading } = useUserStore();
   const navigate = useNavigate();
   const handleChange = (index: number, value: string) => {
     if (/^[a-zA-Z0-9]$/.test(value) || value === "") {
@@ -55,9 +17,9 @@ const VerifyEmail = () => {
       newOtp[index] = value;
       setOtp(newOtp);
     }
-    // Move to the next input field id a digit is entered
+    // Move to the next input field,if a digit is entered
     if (value !== "" && index < 5) {
-      inputRef.current[index + 1].focus();
+      inputRef.current[index + 1]?.focus();
     }
   };
 
@@ -66,19 +28,31 @@ const VerifyEmail = () => {
     e: React.KeyboardEvent<HTMLInputElement>
   ) => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
-      inputRef.current[index - 1].focus();
+      inputRef.current[index - 1]?.focus();
     }
   };
-  const submitHandler = async (e:FormEvent<HTMLFormElement>) => {
+
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const verificationCode = otp.join("");
     try {
       await verifyEmail(verificationCode);
       navigate("/");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
+
+  // const submitHandler = async (e:FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const verificationCode = otp.join("");
+  //   try {
+  //     await verifyEmail(verificationCode);
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <div className="flex items-center justify-center h-screen w-full">
@@ -109,17 +83,12 @@ const VerifyEmail = () => {
             ))}
           </div>
           {loading ? (
-            <Button
-              disabled
-              className=" mt-6 w-full"
-            >
+            <Button disabled className=" mt-6 w-full">
               <Loader2 className="mr-2 w-4 h-4 animate-spin" />
               Please wait
             </Button>
           ) : (
-            <Button className=" mt-6 w-full">
-              Verify
-            </Button>
+            <Button className=" mt-6 w-full">Verify</Button>
           )}
         </form>
       </div>

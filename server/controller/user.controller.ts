@@ -111,6 +111,8 @@ export const verifyEmail = async (
 ): Promise<void> => {
   try {
     const { verificationCode } = req.body;
+    console.log(verificationCode);
+    
     const user = await User.findOne({
       verificationToken: verificationCode,
       verificationTokenExpiredAt: { $gt: new Date() },

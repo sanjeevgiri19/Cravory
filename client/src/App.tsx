@@ -1,88 +1,17 @@
-// import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Signup from "./auth/Signup";
-import ForgotPassword from "./auth/ForgotPassword";
-import VerifyEmail from "./auth/VerifyEmail";
-import ResetPassword from "./auth/ResetPassword";
-import Login from "./auth/Login";
-import MainLayout from "./layout/MainLayout";
-import HeroSection from "./components/pages/HeroSection";
-import Profile from "./components/pages/Profile";
-import SearchPage from "./components/SearchPage";
-import ResturantDetails from "./components/ResturantDetails";
-import Cart from "./components/Cart";
-import Resturant from "./admin/Resturant";
-import AddMenu from "./admin/AddMenu";
-import Orders from "./admin/Orders";
-import OrderSuccess from "./components/OrderSuccess";
-
-const appRouter = createBrowserRouter([
-  {
-    path: "/",
-    element: <MainLayout />,
-    children: [
-      {
-        path: "/",
-        element: <HeroSection />,
-      },
-      {
-        path: "/profile",
-        element: <Profile />,
-      },
-      {
-        path: "/search/:text",
-        element: <SearchPage />,
-      },
-      {
-        path: "/resturant/:id",
-        element: <ResturantDetails />,
-      },
-      {
-        path: "/cart",
-        element: <Cart />,
-      },
-      {
-        path: "/order/status",
-        element:<OrderSuccess />
-      },
-      // admin 
-      {
-        path: "/admin/resturant",
-        element: <Resturant />,
-      },
-      {
-        path: "/admin/menu",
-        element: <AddMenu />,
-      },
-      {
-        path: "/admin/orders",
-        element: <Orders />
-      }
-    ],
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/signup",
-    element: <Signup />,
-  },
-  {
-    path: "/forgot_password",
-    element: <ForgotPassword />,
-  },
-  {
-    path: "/reset_password",
-    element: <ResetPassword />,
-  },
-  {
-    path: "/verify_email",
-    element: <VerifyEmail />,
-  },
-]);
+import { RouterProvider } from "react-router-dom";
+import { appRouter } from "./routes/AppRouter";
+import { useUserStore } from "./store/useUserStore";
+import { useEffect } from "react";
+import Loading from "./components/Loading";
 
 function App() {
+  const { isCheckingAuth, checkAuthentication } = useUserStore();
+
+  useEffect(() => {
+    checkAuthentication();
+  }, [checkAuthentication]);
+
+  if (isCheckingAuth) return <Loading />;
   return (
     <main>
       <RouterProvider router={appRouter} />

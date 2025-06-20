@@ -2,9 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { userLoginSchema, type loginInputState } from "@/schema/userSchema";
+import { useUserStore } from "@/store/useUserStore";
 import { Loader2, LockKeyhole, Mail } from "lucide-react";
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // type loginInputState = {
 //   email: string;
@@ -18,13 +19,16 @@ const Login = () => {
   });
 
   const [errors, setErrors] = useState<Partial<loginInputState>>({});
+  const navigate = useNavigate();
+
+  const { login, loading } = useUserStore();
 
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInput({ ...input, [name]: value });
   };
 
-  const loginSubmitHandler = (e: FormEvent) => {
+  const loginSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
     const result = userLoginSchema.safeParse(input);
     if (!result.success) {
@@ -32,9 +36,13 @@ const Login = () => {
       setErrors(fieldErrors as Partial<loginInputState>);
       return;
     }
-    console.log(input);
+    try {
+      await login(input);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const loading = false;
 
   return (
     <div className="flex items-center justify-center min-h-screen">
