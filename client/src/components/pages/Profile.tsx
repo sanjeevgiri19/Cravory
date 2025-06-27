@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useUserStore } from "@/store/useUserStore";
 
 type ProfileData = {
   username: string;
@@ -21,26 +22,29 @@ type ProfileData = {
 };
 
 const Profile = () => {
-  const [profileData, setProfileData] = useState<ProfileData>({
-    username: "",
-    email: "",
-    address: "",
-    country: "",
-    city: "",
-    profilePicture: "",
-  });
-
+  const { user, loading, updateProfile } = useUserStore();
   // const [profileData, setProfileData] = useState<ProfileData>({
-  //   fullname: user?.fullname || "",
-  //   email: user?.email || "",
-  //   address: user?.address || "",
-  //   city: user?.city || "",
-  //   country: user?.country || "",
-  //   profilePicture: user?.profilePicture || "",
+  //   username: "",
+  //   email: "",
+  //   address: "",
+  //   country: "",
+  //   city: "",
+  //   profilePicture: "",
   // });
+
+  const [islLoading, setIsLoading] = useState<boolean>(false);
+
+  const [profileData, setProfileData] = useState<ProfileData>({
+    username: user?.username || "",
+    email: user?.email || "",
+    address: user?.address || "",
+    city: user?.city || "",
+    country: user?.country || "",
+    profilePicture: user?.profilePicture || "",
+  });
   const imageRef = useRef<HTMLInputElement | null>(null);
   const [selectedProfilePic, setSelectedProfilePic] = useState<string>("");
-  const loading = false;
+  // const loading = false;
 
   const fileChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -62,9 +66,15 @@ const Profile = () => {
 
   const updateProfileHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // update profile api implementation
-
-    console.log(profileData);
+    try {
+      setIsLoading(true);
+      // update profile api implementation
+      updateProfile(profileData);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+    }
   };
 
   return (
@@ -157,7 +167,7 @@ const Profile = () => {
         </div>
       </div>
       <div className="text-center">
-        {loading ? (
+        {islLoading ? (
           <Button disabled className="bg-blue-500">
             <Loader2 className="mr-2 w-4 h-4 animate-spin" />
             Please wait

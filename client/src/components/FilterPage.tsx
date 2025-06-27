@@ -1,3 +1,4 @@
+import { useRestaurantStore } from "@/store/useRestaurant";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
@@ -15,15 +16,17 @@ const filterOptions: FilterOptions[] = [
 ];
 
 const FilterPage = () => {
+  const { setAppliedFilter, appliedFilter, resetAppliedFilter } = useRestaurantStore();
   const appliedFilterHandler = (value: string) => {
     // alert("item selected");
+    setAppliedFilter(value);
   };
 
   return (
     <div className="md:w-72">
       <div className="flex justify-between items-center">
         <h2 className="font-medium text-lg">Filter By Cuisines</h2>
-        <Button variant={"link"} className="">
+        <Button variant={"link"} className="" onClick={resetAppliedFilter}>
           Reset
         </Button>
       </div>
@@ -34,6 +37,7 @@ const FilterPage = () => {
         >
           <Checkbox
             id={option.id}
+            checked={appliedFilter.includes(option.label)}
             onClick={() => appliedFilterHandler(option.label)}
           />
           <Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">

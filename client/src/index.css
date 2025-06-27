@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "tw-animate-css";
+@import "tw-animate-css"; /* Keep this if you're using it for other animations */
 
 @custom-variant dark (&:is(.dark *));
 
@@ -74,8 +74,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --button: #d19254;
-  --hoverButtonColor: #d18c47;
+  --button: #d19254; /* You can adjust this with oklch values too if you want */
+  --hoverButtonColor: #d18c47; /* You can adjust this with oklch values too if you want */
 }
 
 .dark {
@@ -111,6 +111,39 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
+
+/* --- Flowing Menu Custom Styles --- */
+
+/* Define custom utility classes for the flowing menu */
+@layer utilities {
+  .translate-y-101 {
+    transform: translateY(101%);
+  }
+  .translate-x-101 { /* Added for consistency, though not directly used in the current menu */
+    transform: translateX(101%);
+  }
+}
+
+/* Define custom keyframes for the marquee animation */
+@layer keyframes {
+  @keyframes marquee {
+    from {
+      transform: translateX(0%);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+/* Define custom animation utility classes that use the keyframes */
+@layer animations {
+  .animate-marquee {
+    animation: marquee 15s linear infinite; /* Adjust speed as needed */
+  }
+}
+
+/* --- End Flowing Menu Custom Styles --- */
 
 @layer base {
   * {

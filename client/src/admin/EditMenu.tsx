@@ -9,7 +9,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { MenuSchema } from "@/schema/MenuSchema";
+import { menuSchema, type MenuSchema } from "@/schema/MenuSchema";
+import { useMenuStore } from "@/store/useMenuStore";
 import { Loader2 } from "lucide-react";
 import type React from "react";
 import {
@@ -36,23 +37,44 @@ const EditMenu = ({
     price: 0,
     image: undefined,
   });
-  const loading = false;
+  const [error, setError] = useState<Partial<MenuSchema>>({});
+
+  const { loading, editMenu } = useMenuStore();
 
   const changeEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
     setInput({ ...input, [name]: type === " number" ? Number(value) : value });
   };
 
-  const submitHandler = (e: FormEvent<InputEventHandler>) => {
+  const submitHandler =async (e: FormEvent<InputEventHandler>) => {
     e.preventDefault();
     console.log(input);
+    const result = menuSchema.safeParse(input);
+    if (!result.success) {
+      const fieldErrors = result.error.formErrors.fieldErrors;
+      setError(fieldErrors as Partial<MenuSchema>);
+      return;
+    }
 
-    
+    try {
+      const formData = new FormData()
+      formData.append("name", input.name)
+      formData.append("description", input.description)
+      formData.append("price", input.price.toString())
+      if (input.image) {
+        formData.append("image", input.image)
+      }
+      await editMenu(selectedMenu._id, formData)
+    } catch (error) {
+      console.error(error);
+      
+    }
+
   };
 
   useEffect(() => {
-    console.log(selectedMenu);
-    
+    // console.log(selectedMenu);
+
     setInput({
       name: selectedMenu?.name || "",
       description: selectedMenu?.description || "",
@@ -126,8 +148,11 @@ const EditMenu = ({
                 <Loader2 className="animate-spin w-4 h-4" /> Please Wait
               </Button>
             ) : (
-              <Button className="bg-orange-500 w-full hover:bg-orange-500 py-5 text-lg cursor-pointer">
-                Submit
+              <Button
+                type="submit"
+                className="bg-orange-500 w-full hover:bg-orange-500 py-5 text-lg cursor-pointer"
+              >
+                Update
               </Button>
             )}
           </DialogFooter>

@@ -8,7 +8,7 @@ import Orders from "@/admin/Orders";
 import AddMenu from "@/admin/AddMenu";
 import Resturant from "@/admin/Resturant";
 import OrderSuccess from "@/components/OrderSuccess";
-import Cart from "@/components/Cart";
+import Cart from "@/components/pages/Cart";
 import ResturantDetails from "@/components/ResturantDetails";
 import SearchPage from "@/components/SearchPage";
 import Profile from "@/components/pages/Profile";

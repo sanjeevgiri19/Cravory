@@ -12,7 +12,7 @@ const NoResultFound = ({ searchText }: { searchText: string }) => {
         with a different term.
       </p>
       <Link to="/">
-        <Button className="mt-4 bg-orange hover:bg-orangeHover">
+        <Button className="mt-4 bg-gray-500 hover:bg-gray-600 cursor-pointer">
           Go Back to Home
         </Button>
       </Link>

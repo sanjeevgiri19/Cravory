@@ -5,12 +5,11 @@ import {
   resturantFormSchema,
   type ResturantFormSchema,
 } from "@/schema/resturantSchema";
+import { useRestaurantStore } from "@/store/useRestaurant";
 import { Loader2 } from "lucide-react";
-import React, { useState, type FormEvent } from "react";
+import React, { useEffect, useState, type FormEvent } from "react";
 
 const Resturant = () => {
-  const loading = false;
-  const isResturant = false;
 
   const [input, setInput] = useState<ResturantFormSchema>({
     resturantName: "",
@@ -22,12 +21,21 @@ const Resturant = () => {
   });
 
   const [errors, setErrors] = useState<Partial<ResturantFormSchema>>({});
+
+  const {
+    loading,
+    restaurant,
+    updateRestaurant,
+    createRestaurant,
+    getRestaurant,
+  } = useRestaurantStore();
+
   const changeEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
     setInput({ ...input, [name]: type === "number" ? Number(value) : value });
   };
 
-  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const result = resturantFormSchema.safeParse(input);
@@ -36,9 +44,46 @@ const Resturant = () => {
       setErrors(fieldErrors as Partial<ResturantFormSchema>);
       return;
     }
+
+    try {
+      const formData = new FormData();
+      formData.append("restaurantName", input.resturantName);
+      formData.append("city", input.city);
+      formData.append("country", input.country);
+      formData.append("deliveryTime", input.deliveryTime.toString());
+      formData.append("cuisines", JSON.stringify(input.cuisines));
+
+      if (input.imageFile) {
+        formData.append("imageFile", input.imageFile);
+      }
+      if (restaurant) {
+        await updateRestaurant(formData);
+      } else {
+        await createRestaurant(formData);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  console.log(input);
+  useEffect(() => {
+    const fetchRestaurant = async () => {
+      await getRestaurant();
+      setInput({
+        resturantName: restaurant.restaurantName || "",
+        city: restaurant.city || "",
+        country: restaurant.country || "",
+        deliveryTime: restaurant.deliveryTime || 0,
+        cuisines: restaurant.cuisines
+          ? restaurant.cuisines.map((cuisine: string) => cuisine)
+          : [],
+        imageFile : undefined
+      });
+    };
+    fetchRestaurant()
+  }, []);
+
+  // console.log(input);
 
   return (
     <div className="mt-6 max-w-6xl mx-auto">
@@ -134,7 +179,6 @@ const Resturant = () => {
               onChange={(e) =>
                 setInput({ ...input, imageFile: e.target.files?.[0] })
               }
-              // placeholder="Enter your Resturant Name"
             />
             {errors && (
               <span className="text-xs text-red-600 font-medium">
@@ -153,7 +197,7 @@ const Resturant = () => {
               </Button>
             ) : (
               <Button className="bg-orange-500 hover:bg-orange-600 text-md">
-                {isResturant ? "Update Resturant" : "Add Resturant"}
+                {restaurant ? "Update Resturant" : "Add Resturant"}
               </Button>
             )}
           </div>

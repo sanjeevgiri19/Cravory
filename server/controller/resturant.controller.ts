@@ -114,64 +114,79 @@ export const updateRestaurant = async (
   }
 };
 
-export const getRestaurantOrder = async (req: Request, res: Response): Promise<void> => {
+export const getRestaurantOrder = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const restaurant = await Restaurant.findOne({ user: req.id });
     if (!restaurant) {
-       res.status(404).json({
+      res.status(404).json({
         success: false,
         message: "Restaurant not found",
       });
-      return
+      return;
     }
     const orders = await Order.find({ restaurant: restaurant._id })
       .populate("restaurant")
       .populate("user");
 
-     res.status(200).json({
+    res.status(200).json({
       success: true,
       orders,
     });
   } catch (error) {
     console.log(error);
-     res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
-export const updateOderStatus = async (req: Request, res: Response): Promise<void> => {
+export const updateOderStatus = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { orderId } = req.params;
     const { status } = req.body;
     const order = await Order.findById(orderId);
     if (!order) {
-       res.status(400).json({
+      res.status(400).json({
         success: false,
         message: "Order not found",
       });
-      return
+      return;
     }
     order.status = status;
     await order.save();
-     res.status(200).json({
+    res.status(200).json({
       success: true,
       status: order.status,
       message: "status updated",
     });
   } catch (error) {
     console.log(error);
-     res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
-export const searchRestaurant = async (req: Request, res: Response): Promise<void> => {
+export const searchRestaurant = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const searchText = req.params.searchText || "";
     const searchQuery = (req.params.searchQuery as string) || "";
-    const selectedCuisines = ((req.query.selectedCuisines as string) || "")
-      .split(",")
-      .filter((cuisine) => cuisine);
+    const selectedCuisines =
+      (req.query.selectedCuisines as string ||
+      "").split(",").filter((cuisine) => cuisine);
 
     const query: any = {};
+    console.log(selectedCuisines, "sss");
+    console.log("sq", searchQuery);
+    console.log("st", searchText);
+    
+    
+    console.log(searchText, searchQuery, selectedCuisines);
 
     // basic search based on searchText(name, checkServerIdentity, country )
     if (searchText) {
@@ -195,17 +210,22 @@ export const searchRestaurant = async (req: Request, res: Response): Promise<voi
     }
 
     const restaurants = await Restaurant.find(query);
-     res.status(200).json({
+    console.log("res", restaurants);
+
+    res.status(200).json({
       success: true,
       data: restaurants,
     });
   } catch (error) {
     console.log(error);
-     res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
-export const getSingleRestaurant = async (req: Request, res: Response): Promise<void> => {
+export const getSingleRestaurant = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const restaurantId = req.params.id;
     const restaurant = await Restaurant.findById(restaurantId).populate({
@@ -214,15 +234,15 @@ export const getSingleRestaurant = async (req: Request, res: Response): Promise<
     });
 
     if (!restaurant) {
-       res.status(400).json({
+      res.status(400).json({
         success: false,
         message: "Restaurant not found",
       });
-      return
+      return;
     }
-     res.status(200).json({ success: true, restaurant });
+    res.status(200).json({ success: true, restaurant });
   } catch (error) {
     console.error(error);
-     res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error" });
   }
 };

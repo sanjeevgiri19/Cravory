@@ -44,7 +44,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
     });
 
     console.log(user);
-    
+
     generateToken(res, user); //Generates jwt token
 
     await sendVerificationEmail(email, verificationToken);
@@ -112,7 +112,7 @@ export const verifyEmail = async (
   try {
     const { verificationCode } = req.body;
     console.log(verificationCode);
-    
+
     const user = await User.findOne({
       verificationToken: verificationCode,
       verificationTokenExpiredAt: { $gt: new Date() },
@@ -269,6 +269,7 @@ export const updateProfile = async (
         public_id: `${userId}_${Date.now()}`,
       });
     }
+    console.log("profike", profilePicture);
 
     const updatedData = {
       username,
@@ -276,19 +277,22 @@ export const updateProfile = async (
       address,
       city,
       country,
-      profilePicture,
-      // profilePicture: cloudResponse?.secure_url
+      // profilePicture,
+      profilePicture: cloudResponse?.secure_url,
     };
 
     const user = await User.findByIdAndUpdate(userId, updatedData, {
       new: true,
     }).select("-password");
 
+    console.log("no succ");
+
     res.status(200).json({
       success: true,
       user,
       message: "Profile updated successfully",
     });
+    console.log("yes succ");
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

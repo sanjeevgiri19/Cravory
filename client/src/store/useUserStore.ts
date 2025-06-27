@@ -152,7 +152,7 @@ export const useUserStore = create<UserState>()(
           }
         } catch (error: any) {
           toast.error(error.response.data.message);
-          set({ loading: false });
+          // set({ loading: false });
         }
       },
 
