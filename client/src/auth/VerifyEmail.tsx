@@ -43,17 +43,6 @@ const VerifyEmail = () => {
     }
   };
 
-  // const submitHandler = async (e:FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   const verificationCode = otp.join("");
-  //   try {
-  //     await verifyEmail(verificationCode);
-  //     navigate("/");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   return (
     <div className="flex items-center justify-center h-screen w-full">
       <div className="p-8 rounded-md w-full max-w-md flex flex-col gap-10 border border-gray-200">
@@ -68,7 +57,9 @@ const VerifyEmail = () => {
             {otp.map((letter: string, idx: number) => (
               <Input
                 key={idx}
-                ref={(element) => (inputRef.current[idx] = element)}
+                ref={(element) => {
+                  inputRef.current[idx] = element;
+                }}
                 type="text"
                 maxLength={1}
                 value={letter}

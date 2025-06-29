@@ -10,7 +10,6 @@ import { Loader2 } from "lucide-react";
 import React, { useEffect, useState, type FormEvent } from "react";
 
 const Resturant = () => {
-
   const [input, setInput] = useState<ResturantFormSchema>({
     resturantName: "",
     city: "",
@@ -70,20 +69,18 @@ const Resturant = () => {
     const fetchRestaurant = async () => {
       await getRestaurant();
       setInput({
-        resturantName: restaurant.restaurantName || "",
-        city: restaurant.city || "",
-        country: restaurant.country || "",
-        deliveryTime: restaurant.deliveryTime || 0,
-        cuisines: restaurant.cuisines
-          ? restaurant.cuisines.map((cuisine: string) => cuisine)
+        resturantName: restaurant?.restaurantName || "",
+        city: restaurant?.city || "",
+        country: restaurant?.country || "",
+        deliveryTime: restaurant?.deliveryTime || 0,
+        cuisines: restaurant?.cuisines
+          ? restaurant?.cuisines.map((cuisine: string) => cuisine)
           : [],
-        imageFile : undefined
+        imageFile: undefined,
       });
     };
-    fetchRestaurant()
+    fetchRestaurant();
   }, []);
-
-  // console.log(input);
 
   return (
     <div className="mt-6 max-w-6xl mx-auto">

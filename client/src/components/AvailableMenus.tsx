@@ -1,10 +1,14 @@
 import { Card, CardContent, CardFooter } from "./ui/card";
 import { Button } from "./ui/button";
 import type { MenuItem } from "@/types/restaurantTypes";
+import { useCartStore } from "@/store/useCartStore";
+import { useNavigate } from "react-router-dom";
 
-const AvailableMenus = ({ menus }: { menus: MenuItem[] }) => {
+const AvailableMenus = ({ menus = [] }: { menus?: MenuItem[] }) => {
   console.log("men", menus);
 
+  const { addToCart } = useCartStore();
+  const navigate = useNavigate();
   return (
     <div className="md:p-4">
       <div className="">
@@ -22,9 +26,7 @@ const AvailableMenus = ({ menus }: { menus: MenuItem[] }) => {
                 <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
                   {menu.name}
                 </h2>
-                <p className="text-sm text-gray-700 mt-1">
-                  {menu.description}
-                </p>
+                <p className="text-sm text-gray-700 mt-1">{menu.description}</p>
                 <h3 className="mt-2 text-lg font-semibold ">
                   Price:{" "}
                   <span className="text-orange-700">Rs. {menu.price}</span>
@@ -32,7 +34,13 @@ const AvailableMenus = ({ menus }: { menus: MenuItem[] }) => {
               </CardContent>
 
               <CardFooter className="">
-                <Button className="bg-orange-500 w-full hover:bg-orange-600 text-md cursor-pointer">
+                <Button
+                  onClick={() => {
+                    addToCart(menu);
+                    navigate("/cart");
+                  }}
+                  className="bg-orange-500 w-full hover:bg-orange-600 text-md cursor-pointer"
+                >
                   Add to Cart
                 </Button>
               </CardFooter>

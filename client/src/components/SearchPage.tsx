@@ -19,12 +19,9 @@ const SearchPage = () => {
 
   const { loading, searchedRestaurant, searchRestaurant, appliedFilter, setAppliedFilter } =
     useRestaurantStore();
-  // console.log(searchedRestaurant);
 
   useEffect(() => {
     searchRestaurant(params.text!, searchQuery, appliedFilter);
-    console.log(searchedRestaurant);
-    console.log("ss", searchQuery);
   },[params.text!, appliedFilter]);
 
   return (

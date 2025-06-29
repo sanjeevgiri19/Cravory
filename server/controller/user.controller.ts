@@ -269,7 +269,6 @@ export const updateProfile = async (
         public_id: `${userId}_${Date.now()}`,
       });
     }
-    console.log("profike", profilePicture);
 
     const updatedData = {
       username,
@@ -277,7 +276,6 @@ export const updateProfile = async (
       address,
       city,
       country,
-      // profilePicture,
       profilePicture: cloudResponse?.secure_url,
     };
 

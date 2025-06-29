@@ -17,23 +17,6 @@ import { useRestaurantStore } from "@/store/useRestaurant";
 import { Loader2, Plus } from "lucide-react";
 import React, { useState, type FormEvent } from "react";
 
-// const menus = [
-//   {
-//     name: "momo",
-//     description: "hello world how are you",
-//     price: 50,
-//     image:
-//       "https://api.freeforstudents.org/assets/c2034dd9-311e-40db-881e-c436c471b3f9?format=auto&width=640",
-//   },
-//   {
-//     name: "biryani",
-//     description: "lorem ispum ssususan",
-//     price: 40,
-//     image:
-//       "https://api.freeforstudents.org/assets/c2034dd9-311e-40db-881e-c436c471b3f9?format=auto&width=640",
-//   },
-// ];
-
 const AddMenu = () => {
   const [input, setInput] = useState<MenuSchema>({
     name: "",
@@ -49,8 +32,7 @@ const AddMenu = () => {
   // const [error, setError] = useState({})
 
   const { loading, createMenu } = useMenuStore();
-  const {restaurant} = useRestaurantStore() 
-  // const loading = false;
+  const { restaurant } = useRestaurantStore();
 
   const changeEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
@@ -59,7 +41,6 @@ const AddMenu = () => {
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log(input);
     const result = menuSchema.safeParse(input);
     if (!result.success) {
       const fieldErrors = result.error.formErrors.fieldErrors;
@@ -80,9 +61,6 @@ const AddMenu = () => {
       console.log(error);
     }
   };
-  // console.log("ip", input);
-  // console.log("rmenu:", restaurant.menus);
-  
 
   return (
     <div className="max-w-6xl mx-auto my-10">
@@ -195,7 +173,7 @@ const AddMenu = () => {
         </Dialog>
       </div>
 
-      {restaurant.menus.map((menu: any, idx: number) => (
+      {restaurant?.menus?.map((menu: any, idx: number) => (
         <div key={idx} className="mt-4 space-y-4 mx-3">
           <div className="flex flex-col p-2 md:flex-row md:items-center md:space-x-4 md:p-4 shadow-md rounded-lg border">
             <img

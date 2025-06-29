@@ -14,8 +14,6 @@ interface FlowingMenuProps {
 
 const FlowingMenu: React.FC<FlowingMenuProps> = ({ items = [] }) => {
   return (
-    // Changed background to a more neutral/app-like color for better contrast with the yellow gradients
-    // Using a darker gray for consistency with typical dark mode app backgrounds
     <div className="w-full h-full overflow-hidden font-sans bg-yellow-600 text-white">
       <nav className="flex flex-col h-full m-0 p-0">
         {items.map((item, idx) => (
@@ -35,9 +33,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
   const itemRef = React.useRef<HTMLDivElement>(null);
   const marqueeRef = React.useRef<HTMLDivElement>(null);
   const marqueeInnerRef = React.useRef<HTMLDivElement>(null);
-
-  // Consider a slightly faster animation for smaller screens, or keep it consistent
-  const animationDefaults = { duration: 2, ease: "expo.out" }; // Reverted duration to 0.6 for snappier feel
+  const animationDefaults = { duration: 2, ease: "expo.out" };
 
   const findClosestEdge = (
     mouseX: number,
@@ -73,7 +69,6 @@ const MenuItem: React.FC<MenuItemProps> = ({
       return;
     const rect = itemRef.current.getBoundingClientRect();
     const edge = findClosestEdge(
-      // Corrected `find.ClosestEdge` to `findClosestEdge`
       ev.clientX - rect.left,
       ev.clientY - rect.top,
       rect.width,

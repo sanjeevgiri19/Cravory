@@ -11,23 +11,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { menuSchema, type MenuSchema } from "@/schema/MenuSchema";
 import { useMenuStore } from "@/store/useMenuStore";
+import type { MenuItem } from "@/types/restaurantTypes";
 import { Loader2 } from "lucide-react";
 import type React from "react";
-import {
-  useEffect,
-  useState,
-  type Dispatch,
-  type FormEvent,
-  type InputEventHandler,
-  type SetStateAction,
-} from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
 const EditMenu = ({
   selectedMenu,
   editOpen,
   setEditOpen,
 }: {
-  selectedMenu: MenuSchema;
+  selectedMenu: MenuItem;
   editOpen: boolean;
   setEditOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
@@ -46,9 +40,9 @@ const EditMenu = ({
     setInput({ ...input, [name]: type === " number" ? Number(value) : value });
   };
 
-  const submitHandler =async (e: FormEvent<InputEventHandler>) => {
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(input);
+    // console.log(input);
     const result = menuSchema.safeParse(input);
     if (!result.success) {
       const fieldErrors = result.error.formErrors.fieldErrors;
@@ -57,24 +51,20 @@ const EditMenu = ({
     }
 
     try {
-      const formData = new FormData()
-      formData.append("name", input.name)
-      formData.append("description", input.description)
-      formData.append("price", input.price.toString())
+      const formData = new FormData();
+      formData.append("name", input.name);
+      formData.append("description", input.description);
+      formData.append("price", input.price.toString());
       if (input.image) {
-        formData.append("image", input.image)
+        formData.append("image", input.image);
       }
-      await editMenu(selectedMenu._id, formData)
+      await editMenu(selectedMenu._id, formData);
     } catch (error) {
       console.error(error);
-      
     }
-
   };
 
   useEffect(() => {
-    // console.log(selectedMenu);
-
     setInput({
       name: selectedMenu?.name || "",
       description: selectedMenu?.description || "",
@@ -92,7 +82,7 @@ const EditMenu = ({
             Lorem ipsum dolor sit amet consectetur.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={submitHandler} className="">
+        <form onSubmit={submitHandler}>
           <div className="">
             <Label className="text-lg mb-1 ml-1">Name</Label>
             <Input
@@ -103,7 +93,13 @@ const EditMenu = ({
               placeholder="Enter your menu name"
               className="py-6"
             />
+            {error && (
+              <span className="text-xs font-medium text-red-600">
+                {error.name}
+              </span>
+            )}
           </div>
+
           <div className="">
             <Label className="text-lg mb-1 ml-1">Description</Label>
             <Input
@@ -114,6 +110,11 @@ const EditMenu = ({
               placeholder="Enter your description"
               className="py-6"
             />
+            {error && (
+              <span className="text-xs font-medium text-red-600">
+                {error.description}
+              </span>
+            )}
           </div>
           <div className="">
             <Label className="text-lg mb-1 ml-1">Price</Label>
@@ -125,6 +126,11 @@ const EditMenu = ({
               placeholder="Enter your menu price"
               className="py-6"
             />
+            {error && (
+              <span className="text-xs font-medium text-red-600">
+                {error.price}
+              </span>
+            )}
           </div>
           <div className="mb-6">
             <Label className="text-lg mb-1 ml-1">Upload Menu Images</Label>
@@ -138,7 +144,13 @@ const EditMenu = ({
                 })
               }
             />
+            {error && (
+              <span className="text-xs font-medium text-red-600">
+                {error?.image?.name}
+              </span>
+            )}
           </div>
+
           <DialogFooter className="">
             {loading ? (
               <Button

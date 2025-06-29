@@ -50,7 +50,7 @@ export const appRouter = createBrowserRouter([
         path: "/order/status",
         element: <OrderSuccess />,
       },
-      // admin
+
       {
         path: "/admin/restaurant",
         element: (

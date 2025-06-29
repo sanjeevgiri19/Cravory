@@ -176,19 +176,18 @@ export const searchRestaurant = async (
   try {
     const searchText = req.params.searchText || "";
     const searchQuery = (req.params.searchQuery as string) || "";
-    const selectedCuisines =
-      (req.query.selectedCuisines as string ||
-      "").split(",").filter((cuisine) => cuisine);
+    const selectedCuisines = ((req.query.selectedCuisines as string) || "")
+      .split(",")
+      .filter((cuisine) => cuisine);
 
     const query: any = {};
     console.log(selectedCuisines, "sss");
     console.log("sq", searchQuery);
     console.log("st", searchText);
-    
-    
+
     console.log(searchText, searchQuery, selectedCuisines);
 
-    // basic search based on searchText(name, checkServerIdentity, country )
+    //  search based on searchText
     if (searchText) {
       query.$or = [
         { restaurantName: { $regex: searchText, $options: "i" } },

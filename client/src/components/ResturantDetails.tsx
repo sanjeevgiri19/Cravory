@@ -12,10 +12,9 @@ const ResturantDetails = () => {
 
   useEffect(() => {
     getSingleRestaurant(params.id!);
-    console.log(singleRestaurant);
+    // console.log(singleRestaurant);
   }, [params.id]);
 
-  console.log(singleRestaurant);
   return (
     <div className="max-w-6xl my-10 mx-auto">
       <div className="m-2">
@@ -55,7 +54,7 @@ const ResturantDetails = () => {
         </div>
         <Separator />
         <div className="my-6">
-          <AvailableMenus menus={singleRestaurant?.menus} />
+          <AvailableMenus menus={singleRestaurant?.menus || []} />
         </div>
       </div>
     </div>

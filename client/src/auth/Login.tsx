@@ -7,11 +7,6 @@ import { Loader2, LockKeyhole, Mail } from "lucide-react";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-// type loginInputState = {
-//   email: string;
-//   password: string;
-// };
-
 const Login = () => {
   const [input, setInput] = useState<loginInputState>({
     email: "",
@@ -21,7 +16,8 @@ const Login = () => {
   const [errors, setErrors] = useState<Partial<loginInputState>>({});
   const navigate = useNavigate();
 
-  const { login, loading } = useUserStore();
+  const { login } = useUserStore();
+  const loading = false;
 
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -106,7 +102,6 @@ const Login = () => {
             Forgot password?
           </Link>
         </div>
-        {/* flex items-center justify-center */}
         <div className=" mb-8">
           {loading ? (
             <Button disabled type="submit" className="bg-gray-900 w-full ">

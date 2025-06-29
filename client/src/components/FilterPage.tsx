@@ -18,7 +18,6 @@ const filterOptions: FilterOptions[] = [
 const FilterPage = () => {
   const { setAppliedFilter, appliedFilter, resetAppliedFilter } = useRestaurantStore();
   const appliedFilterHandler = (value: string) => {
-    // alert("item selected");
     setAppliedFilter(value);
   };
 

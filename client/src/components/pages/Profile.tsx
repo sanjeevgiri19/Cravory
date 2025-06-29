@@ -22,16 +22,7 @@ type ProfileData = {
 };
 
 const Profile = () => {
-  const { user, loading, updateProfile } = useUserStore();
-  // const [profileData, setProfileData] = useState<ProfileData>({
-  //   username: "",
-  //   email: "",
-  //   address: "",
-  //   country: "",
-  //   city: "",
-  //   profilePicture: "",
-  // });
-
+  const { user, updateProfile } = useUserStore();
   const [islLoading, setIsLoading] = useState<boolean>(false);
 
   const [profileData, setProfileData] = useState<ProfileData>({
@@ -44,7 +35,6 @@ const Profile = () => {
   });
   const imageRef = useRef<HTMLInputElement | null>(null);
   const [selectedProfilePic, setSelectedProfilePic] = useState<string>("");
-  // const loading = false;
 
   const fileChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -68,7 +58,6 @@ const Profile = () => {
     e.preventDefault();
     try {
       setIsLoading(true);
-      // update profile api implementation
       updateProfile(profileData);
       setIsLoading(false);
     } catch (error) {

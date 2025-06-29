@@ -34,7 +34,6 @@ export const useMenuStore = create<MenuState>()(
             set({ loading: false, menu: response.data.menu });
           }
 
-          // useRestaurantStore.getState().addMenuToRestaurant(response.data.menu);
           useRestaurantStore.getState().addMenuToRestaurant(response.data.menu);
         } catch (error: any) {
           toast.error(error.response.data.message);
@@ -58,7 +57,6 @@ export const useMenuStore = create<MenuState>()(
             toast.success(response.data.message);
             set({ loading: false, menu: response.data.menu });
           }
-          // update restaurant menu
           useRestaurantStore
             .getState()
             .updateMenuToRestaurant(response.data.menu);

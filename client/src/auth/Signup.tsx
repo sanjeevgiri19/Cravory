@@ -7,13 +7,6 @@ import { Loader2, LockKeyhole, Mail, PhoneIcon, User } from "lucide-react";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-// type signupInputState = {
-//   username: string;
-//   email: string;
-//   password: string;
-//   contact: string;
-// };
-
 const Signup = () => {
   const [input, setInput] = useState<signupInputState>({
     username: "",
@@ -35,7 +28,6 @@ const Signup = () => {
   const signupSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
 
-    //the real game begins here
     const result = userSignupSchema.safeParse(input);
     if (!result.success) {
       const fieldErrors = result.error.formErrors.fieldErrors;
@@ -50,7 +42,6 @@ const Signup = () => {
       console.log(error);
     }
   };
-  // const loading = false;
 
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -121,7 +112,6 @@ const Signup = () => {
             <span className="text-red-600 text-sm">{errors.contact}</span>
           )}
         </div>
-        {/* flex items-center justify-center */}
         <div className=" mb-8">
           {loading ? (
             <Button disabled type="submit" className="bg-gray-900 w-[90%] ">

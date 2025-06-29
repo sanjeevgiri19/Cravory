@@ -1,13 +1,28 @@
 import { useUserStore } from "@/store/useUserStore";
 import { Link } from "react-router-dom";
-import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from "../ui/menubar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+} from "../ui/menubar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { Loader2, Moon, ShoppingCart, Sun } from "lucide-react";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useCartStore } from "@/store/useCartStore";
+import { useThemeStore } from "@/store/useThemeStore";
 
 const NavLinks = () => {
   const { user, loading, logout } = useUserStore();
+  const { cart } = useCartStore();
+ const {setTheme} = useThemeStore()
   return (
     <div className="hidden md:flex items-center gap-10">
       <div className="hidden md:flex items-center gap-6">
@@ -53,33 +68,34 @@ const NavLinks = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>Light</DropdownMenuItem>
-              <DropdownMenuItem>Dark</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme('light')}>Light</DropdownMenuItem>
+              <DropdownMenuItem onClick={() =>setTheme('dark')}>Dark</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
 
         <Link to="/cart" className="relative cursor-pointer">
           <ShoppingCart />
-          {}
-          <Button
-            size="icon"
-            className="absolute -inset-y-1 left-2 text-xs rounded-full w-4 h-4 bg-red-500 hover:bg-red-600"
-          >
-            4
-          </Button>
+          {cart.length > 0 && (
+            <Button
+              size="icon"
+              className="absolute -inset-y-1 left-2 text-xs rounded-full w-4 h-4 bg-red-500 hover:bg-red-600"
+            >
+              {cart.length}
+            </Button>
+          )}
         </Link>
 
         <div>
           <Avatar>
-            <AvatarImage alt="ProfilePic" />
+            <AvatarImage src={user?.profilePicture} alt="ProfilePic" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </div>
 
         <div>
           {loading ? (
-            <Button className="">
+            <Button disabled className="">
               <Loader2 className="animate-spin mt-1 w-4 h-4" />
               logging out
             </Button>

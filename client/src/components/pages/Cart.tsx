@@ -12,13 +12,28 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import CheckoutConfirmPage from "../CheckoutConfirmPage";
 import { useState } from "react";
+import { useCartStore } from "@/store/useCartStore";
+import type { cartItem } from "@/types/cartTypes";
 
 const Cart = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const {
+    cart,
+    incrementQuantity,
+    decrementQuantity,
+    removeFromTheCart,
+    clearCart,
+  } = useCartStore();
+  console.log("cart", cart);
+
+  const totalAmount = cart.reduce((acc, elem) => {
+    return acc + elem.price * elem.quantity;
+  }, 0);
+
   return (
     <div className="flex flex-col max-w-7xl mx-auto my-10">
       <div className="flex justify-end">
-        <Button variant={"link"} className="text-md">
+        <Button variant={"link"} onClick={() => clearCart()} className="text-md">
           Clear All
         </Button>
       </div>
@@ -34,51 +49,57 @@ const Cart = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell>
-              <Avatar>
-                <AvatarImage
-                  src="https://th.bing.com/th/id/OIP.cYywe_ua6wj5Ee6sn54XagHaEK?w=320&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3"
-                  alt=""
+          {cart.map((item: cartItem) => (
+            <TableRow key={item._id}>
+              <TableCell>
+                <Avatar>
+                  <AvatarImage src={item.image} alt="" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </TableCell>
+              <TableCell className="text-[16px]">{item.name}</TableCell>
+              <TableCell className="text-[16px]">Rs. {item.price}</TableCell>
+              <TableCell>
+                <div className="flex items-center w-fit rounded-full border border-gray-200 dark:border-gray-200 shadow-md">
+                  <Button
+                    size={"icon"}
+                    variant={"outline"}
+                    className="rounded-full bg-gray-200 cursor-pointer"
+                    onClick={() => decrementQuantity(item._id)}
+                  >
+                    <Minus />
+                  </Button>
+                  <Button
+                    disabled
+                    variant={"outline"}
+                    size={"icon"}
+                    className="border-none text-lg"
+                  >
+                    {item.quantity}
+                  </Button>
+                  <Button
+                    size={"icon"}
+                    variant={"outline"}
+                    className="rounded-full bg-orange-300 hover:bg-orange-500 cursor-pointer"
+                    onClick={() => incrementQuantity(item._id)}
+                  >
+                    <Plus />
+                  </Button>
+                </div>
+              </TableCell>
+              <TableCell className="text-[16px]">
+                {item.price * item.quantity}
+              </TableCell>
+              <TableCell className="flex justify-end font-semibold ">
+                {/* lucide icons are inline-flex by default, not affected by text-right, */}
+                <X
+                  size={32}
+                  onClick={() => removeFromTheCart(item._id)}
+                  className="cursor-pointer"
                 />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </TableCell>
-            <TableCell className="text-[16px]">Veg. Momo</TableCell>
-            <TableCell className="text-[16px]">Rs. 210</TableCell>
-            <TableCell>
-              <div className="flex items-center w-fit rounded-full border border-gray-200 dark:border-gray-200 shadow-md">
-                <Button
-                  size={"icon"}
-                  variant={"outline"}
-                  className="rounded-full bg-gray-200 cursor-pointer"
-                >
-                  <Minus />
-                </Button>
-                <Button
-                  disabled
-                  variant={"outline"}
-                  size={"icon"}
-                  className="border-none text-lg"
-                >
-                  3
-                </Button>
-                <Button
-                  size={"icon"}
-                  variant={"outline"}
-                  className="rounded-full bg-orange-300 hover:bg-orange-500 cursor-pointer
-                  "
-                >
-                  <Plus />
-                </Button>
-              </div>
-            </TableCell>
-            <TableCell className="text-[16px]">190</TableCell>
-            <TableCell className="flex justify-end font-semibold ">
-              {/* lucide icons are inline-flex by default, not affected by text-right, */}
-              <X size={32} className="cursor-pointer" />
-            </TableCell>
-          </TableRow>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
 
         <TableFooter>
@@ -86,7 +107,7 @@ const Cart = () => {
             <TableCell colSpan={5} className="text-lg">
               Total:{" "}
             </TableCell>
-            <TableCell className="text-right text-lg">4300</TableCell>
+            <TableCell className="text-right text-lg">{totalAmount}</TableCell>
           </TableRow>
         </TableFooter>
       </Table>

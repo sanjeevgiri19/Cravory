@@ -9,11 +9,6 @@ declare global {
   }
 }
 
-// Extend the Request interface to include custom properties
-// interface AuthenticatedRequest extends Request {
-//   id?: string; // Add id property used in checkAuth and updateProfile
-// }
-
 export const isAuthenticated = async (
   req: Request,
   res: Response,
