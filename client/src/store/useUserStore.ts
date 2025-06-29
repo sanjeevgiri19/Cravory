@@ -5,7 +5,7 @@ import type { loginInputState, signupInputState } from "@/schema/userSchema";
 import { toast } from "sonner";
 import type { UserState } from "@/types/userTypes";
 
-const API_ENDPOINT = "http://localhost:8000/api/v1/user";
+const API_ENDPOINT = "https://foodie-76b5.onrender.com/api/v1/user";
 axios.defaults.withCredentials = true;
 
 

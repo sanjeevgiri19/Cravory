@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-const API_ENDPOINT: string = "http://localhost:8000/api/v1/order";
+const API_ENDPOINT: string = "https://foodie-76b5.onrender.com/api/v1/order";
 axios.defaults.withCredentials = true;
 
 export const useOrderStore = create<OrderState>()(
