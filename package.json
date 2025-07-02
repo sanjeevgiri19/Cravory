@@ -1,12 +1,12 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/server/index.js",
   "scripts": {
-    "dev": "node server/index.ts",
+    "dev": "nodeon server/index.ts",
     "stripe": "stripe listen --forward-to localhost:8000/api/v1/order/webhook",
-    "build": "npm install && npm install --prefix client && npm run build --prefix client",
-    "start": "nodemon server/index.ts"
+    "build": "npm install && npm install --prefix client && npm run build --prefix client && tsc",
+    "start": "node dist/server/index.js"
   },
   "keywords": [],
   "author": "",
