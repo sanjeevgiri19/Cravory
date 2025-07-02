@@ -1,5 +1,5 @@
 import type { cartItem, CartState } from "@/types/cartTypes";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 // import type { MenuItem } from "@/types/restaurantTypes";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -11,6 +11,9 @@ export const useCartStore = create<CartState>()(
 
       addToCart: (item: cartItem) => {
         set((state) => {
+
+          // Allows only one restaurant per cart
+
           // if (
           //   state.cart.length > 0 &&
           //   state.cart[0].restaurantId !== item.restaurantId
