@@ -16,7 +16,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useUserStore } from "@/store/useUserStore";
 import type { CheckoutSessionRequest } from "@/types/orderTypes";
-import { useRestaurantStore } from "@/store/useRestaurant";
+// import { useRestaurantStore } from "@/store/useRestaurant";
 import { useCartStore } from "@/store/useCartStore";
 import { useOrderStore } from "@/store/useOrderStore";
 import { Loader2 } from "lucide-react";
@@ -40,7 +40,7 @@ const CheckoutConfirmPage = ({
   });
   const { cart } = useCartStore();
   const { createCheckoutSession, loading } = useOrderStore();
-  const { restaurant } = useRestaurantStore();
+  // const { restaurants } = useRestaurantStore();
 
   const changeEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -49,6 +49,23 @@ const CheckoutConfirmPage = ({
 
   const checkoutHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // const restaurantId =
+    //   cart.length > 0
+    //     ? cart[0]?.restaurantId || cart[0]?.restaurantId
+    //     : restaurants && restaurants.length > 0
+    //     ? restaurants[0]._id
+    //     : "";
+    const restaurantId = cart.length > 0 ? cart[0].restaurantId : "";
+
+    console.log("Cart at checkout:", cart);
+    console.log("restaurantId at checkout:", restaurantId);
+
+    if (!restaurantId) {
+      console.error("Cannot checkout, restaurant not found for cart items");
+      // return;
+    }
+
     try {
       const checkoutData: CheckoutSessionRequest = {
         cartItems: cart.map((cartItem) => ({
@@ -64,13 +81,14 @@ const CheckoutConfirmPage = ({
           address: input.address,
           city: input.city,
           country: input.country,
-          contact: input.contact 
+          contact: input.contact,
         },
-        restaurantId: restaurant?._id as string,
+        restaurantId: restaurantId as string,
       };
       await createCheckoutSession(checkoutData);
     } catch (error) {
-      console.error(error);
+      console.error("checkout failed:" + error);
+      // alert("Checkout failed: " + error.message);
     }
   };
 

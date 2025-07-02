@@ -18,22 +18,40 @@ const Resturant = () => {
     cuisines: [],
     imageFile: undefined,
   });
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const [errors, setErrors] = useState<Partial<ResturantFormSchema>>({});
 
   const {
     loading,
-    restaurant,
+    restaurants,
     updateRestaurant,
     createRestaurant,
     getRestaurant,
   } = useRestaurantStore();
+
+  useEffect(() => {
+    getRestaurant();
+  }, []);
+
+  // const restaurant = restaurants?.find((r) => r._id === restaurantId);
 
   const changeEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
     setInput({ ...input, [name]: type === "number" ? Number(value) : value });
   };
 
+  const handleEdit = (restaurants: any) => {
+    setEditingId(restaurants._id);
+    setInput({
+      resturantName: restaurants.restaurantName,
+      city: restaurants.city,
+      country: restaurants.country,
+      deliveryTime: restaurants.deliveryTime,
+      cuisines: restaurants.cuisines,
+      imageFile: undefined,
+    });
+  };
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -55,32 +73,50 @@ const Resturant = () => {
       if (input.imageFile) {
         formData.append("imageFile", input.imageFile);
       }
-      if (restaurant) {
-        await updateRestaurant(formData);
+      // await createRestaurant(formData);
+
+      if (editingId) {
+        await updateRestaurant(editingId, formData);
+        setEditingId(null);
       } else {
         await createRestaurant(formData);
       }
+
+      setInput({
+        resturantName: "",
+        city: "",
+        country: "",
+        deliveryTime: 0,
+        cuisines: [],
+        imageFile: undefined,
+      });
+
+      // if (restaurants) {
+      //   await updateRestaurant(formData);
+      // } else {
+      //   await createRestaurant(formData);
+      // }
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    const fetchRestaurant = async () => {
-      await getRestaurant();
-      setInput({
-        resturantName: restaurant?.restaurantName || "",
-        city: restaurant?.city || "",
-        country: restaurant?.country || "",
-        deliveryTime: restaurant?.deliveryTime || 0,
-        cuisines: restaurant?.cuisines
-          ? restaurant?.cuisines.map((cuisine: string) => cuisine)
-          : [],
-        imageFile: undefined,
-      });
-    };
-    fetchRestaurant();
-  }, []);
+  // useEffect(() => {
+  //   const fetchRestaurant = async () => {
+  //     await getRestaurant();
+  //     setInput({
+  //       resturantName: restaurants?.restaurantName || "",
+  //       city: restaurants?.city || "",
+  //       country: restaurants?.country || "",
+  //       deliveryTime: restaurants?.deliveryTime || 0,
+  //       cuisines: restaurants?.cuisines
+  //         ? restaurants?.cuisines.map((cuisine: string) => cuisine)
+  //         : [],
+  //       imageFile: undefined,
+  //     });
+  //   };
+  //   fetchRestaurant();
+  // }, []);
 
   return (
     <div className="mt-6 max-w-6xl mx-auto">
@@ -193,12 +229,37 @@ const Resturant = () => {
                 Please Wait
               </Button>
             ) : (
-              <Button className="bg-orange-500 hover:bg-orange-600 text-md">
-                {restaurant ? "Update Resturant" : "Add Resturant"}
+              <Button className="bg-orange-500 hover:bg-orange-600 cursor-pointer text-md">
+                {editingId ? "Update Resturant" : "Add Resturant"}
+                {/* Add Restaurant */}
               </Button>
             )}
           </div>
         </form>
+        <h3 className="text-xl font-bold mt-10 mb-4">My Restaurants</h3>
+        <div className="grid md:grid-cols-2 gap-6">
+          {restaurants?.map((r: any) => (
+            <div key={r._id} className="border rounded-lg p-4 shadow">
+              <img
+                src={r.imageUrl}
+                alt={r.restaurantName}
+                className="w-full h-40 object-cover rounded"
+              />
+              <h3 className="text-xl font-semibold mt-2">{r.restaurantName}</h3>
+              <p>
+                {r.city}, {r.country}
+              </p>
+              <p>Cuisines: {r.cuisines.join(", ")}</p>
+              <p>Delivery Time: {r.deliveryTime} min</p>
+              <button
+                className="mt-2 px-3 py-1 bg-blue-500 text-white cursor-pointer rounded"
+                onClick={() => handleEdit(r)}
+              >
+                Edit
+              </button>{" "}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

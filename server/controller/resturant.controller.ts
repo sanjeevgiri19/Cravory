@@ -12,14 +12,14 @@ export const createRestaurant = async (
     const { restaurantName, city, country, deliveryTime, cuisines } = req.body;
     const file = req.file;
 
-    const restaurant = await Restaurant.findOne({ user: req.id });
-    if (restaurant) {
-      res.status(400).json({
-        succesS: false,
-        message: "Restaurant already exist for this user",
-      });
-      return;
-    }
+    // const restaurant = await Restaurant.findOne({ user: req.id });
+    // if (restaurant) {
+    //   res.status(400).json({
+    //     succesS: false,
+    //     message: "Restaurant already exist for this user",
+    //   });
+    //   return;
+    // }
 
     if (!file) {
       res.status(400).json({
@@ -56,10 +56,10 @@ export const getRestaurant = async (
   res: Response
 ): Promise<void> => {
   try {
-    const restaurant = await Restaurant.findOne({ user: req.id }).populate(
+    const restaurants = await Restaurant.find({ user: req.id }).populate(
       "menus"
     );
-    if (!restaurant) {
+    if (!restaurants || restaurants.length === 0) {
       res.status(404).json({
         success: false,
         restaurant: [],
@@ -67,7 +67,7 @@ export const getRestaurant = async (
       });
       return;
     }
-    res.status(200).json({ success: true, restaurant });
+    res.status(200).json({ success: true, restaurants });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
@@ -81,8 +81,9 @@ export const updateRestaurant = async (
   try {
     const { restaurantName, city, country, deliveryTime, cuisines } = req.body;
     const file = req.file;
+    const { id } = req.params;
 
-    const restaurant = await Restaurant.findOne({ user: req.id });
+    const restaurant = await Restaurant.findOne({ _id: id, user: req.id });
     if (!restaurant) {
       res.status(404).json({
         success: false,
@@ -101,6 +102,7 @@ export const updateRestaurant = async (
       const imageUrl = await uploadImageOnCloudinary(
         file as Express.Multer.File
       );
+      restaurant.imageUrl = imageUrl;
     }
     await restaurant.save();
     res.status(200).json({

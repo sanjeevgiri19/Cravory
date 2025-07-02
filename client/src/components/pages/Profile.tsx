@@ -41,9 +41,9 @@ const Profile = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const result = reader.result as string;
-        setSelectedProfilePic(result);
-        setProfileData((prevData) => ({ ...prevData, profilePicture: result }));
+        // const result = reader.result as string;
+        setSelectedProfilePic(URL.createObjectURL(file));
+        // setProfileData((prevData) => ({ ...prevData, profilePicture: result }));
       };
       reader.readAsDataURL(file);
     }
@@ -54,11 +54,23 @@ const Profile = () => {
     setProfileData({ ...profileData, [name]: value });
   };
 
-  const updateProfileHandler = (e: FormEvent<HTMLFormElement>) => {
+  const updateProfileHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       setIsLoading(true);
-      updateProfile(profileData);
+      const formData = new FormData();
+      formData.append("username", profileData.username);
+      formData.append("email", profileData.email);
+      formData.append("address", profileData.address);
+      formData.append("city", profileData.city);
+      formData.append("country", profileData.country);
+
+      // If a new file is selected, append it
+      if (imageRef.current?.files?.[0]) {
+        formData.append("profilePicture", imageRef.current.files[0]);
+      }
+
+      await updateProfile(formData);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -74,7 +86,7 @@ const Profile = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 ">
           <Avatar className="relative md:w-28 md:h-28 w-20 h-20">
-            <AvatarImage src={selectedProfilePic} />
+            <AvatarImage src={selectedProfilePic || user?.profilePicture} />
             <AvatarFallback>CN</AvatarFallback>
             <input
               ref={imageRef}

@@ -54,7 +54,13 @@ const ResturantDetails = () => {
         </div>
         <Separator />
         <div className="my-6">
-          <AvailableMenus menus={singleRestaurant?.menus || []} />
+          <AvailableMenus
+            menus={(singleRestaurant?.menus || []).map((menu) => ({
+              ...menu,
+              quantity: 1,
+              restaurantId: singleRestaurant?._id || "",
+            }))}
+          />
         </div>
       </div>
     </div>

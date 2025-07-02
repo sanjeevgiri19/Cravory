@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 
 export const addMenu = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, description, price } = req.body;
+    const { name, description, price, restaurantId } = req.body;
     const file = req.file;
     if (!file) {
       res.status(400).json({
@@ -24,11 +24,15 @@ export const addMenu = async (req: Request, res: Response): Promise<void> => {
       image: imageUrl,
     });
 
-    const restaurant = await Restaurant.findOne({ user: req.id });
-    if (restaurant) {
-      (restaurant.menus as mongoose.Schema.Types.ObjectId[]).push(menu._id);
-      await restaurant.save();
-    }
+    const restaurant = await Restaurant.findByIdAndUpdate(
+      restaurantId,
+      { $push: { menus: menu._id } },
+      { new: true }
+    );
+    // if (restaurant) {
+    //   (restaurant.menus as mongoose.Schema.Types.ObjectId[]).push(menu._id);
+    //   await restaurant.save();
+    // }
 
     res.status(201).json({
       success: true,
@@ -38,6 +42,20 @@ export const addMenu = async (req: Request, res: Response): Promise<void> => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getAllMenus = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const menus = await Menu.find();
+    res.status(200).json({ success: true, menus });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error, Failed to get Menus" });
   }
 };
 

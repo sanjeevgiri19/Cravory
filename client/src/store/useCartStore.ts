@@ -1,5 +1,6 @@
-import type { CartState } from "@/types/cartTypes";
-import type { MenuItem } from "@/types/restaurantTypes";
+import type { cartItem, CartState } from "@/types/cartTypes";
+import { toast } from "sonner";
+// import type { MenuItem } from "@/types/restaurantTypes";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
@@ -7,10 +8,17 @@ export const useCartStore = create<CartState>()(
   persist(
     (set) => ({
       cart: [],
-      
 
-      addToCart: (item: MenuItem) => {
+      addToCart: (item: cartItem) => {
         set((state) => {
+          // if (
+          //   state.cart.length > 0 &&
+          //   state.cart[0].restaurantId !== item.restaurantId
+          // ) {
+          //   toast.error("You can only order from one restaurant at a time");
+          //   return state;
+          // }
+
           const existingItem = state.cart.find(
             (cartItem) => cartItem._id === item._id
           );
@@ -54,7 +62,7 @@ export const useCartStore = create<CartState>()(
             item._id === id && item.quantity > 1
               ? { ...item, quantity: item.quantity - 1 }
               : item
-           ),
+          ),
         }));
       },
     }),

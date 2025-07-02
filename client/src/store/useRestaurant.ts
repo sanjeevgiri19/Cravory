@@ -5,14 +5,14 @@ import { toast } from "sonner";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-const API_ENDPOINT = "https://foodie-76b5.onrender.com/api/v1/restaurant";
+const API_ENDPOINT = "http://localhost:8000/api/v1/restaurant";
 axios.defaults.withCredentials = true;
 
 export const useRestaurantStore = create<RestaurantState>()(
   persist(
     (set, get) => ({
       loading: false,
-      restaurant: null,
+      restaurants: [],
       searchedRestaurant: null,
       appliedFilter: [],
       singleRestaurant: null,
@@ -26,13 +26,14 @@ export const useRestaurantStore = create<RestaurantState>()(
             },
           });
           if (response.data.success) {
+            await get().getRestaurant(); //refetch restaurants
             toast.success(response.data.message);
             set({ loading: false });
           }
-        } catch (error:any) {
+        } catch (error: any) {
           toast.error(error.response.data.message);
           set({ loading: false });
-          console.error(error);
+          // console.error(error);
         }
       },
 
@@ -41,25 +42,26 @@ export const useRestaurantStore = create<RestaurantState>()(
           set({ loading: true });
           const response = await axios.get(`${API_ENDPOINT}/`);
           if (response.data.success) {
-            set({ loading: false, restaurant: response.data.restaurant });
+            set({ loading: false, restaurants: response.data.restaurants });
           }
         } catch (error: any) {
           if (error.response.status === 404) {
-            set({ restaurant: null });
+            set({ restaurants: null });
           }
           set({ loading: false });
         }
       },
 
-      updateRestaurant: async (formData: FormData) => {
+      updateRestaurant: async (id: string, formData: FormData) => {
         try {
           set({ loading: true });
-          const response = await axios.put(`${API_ENDPOINT}/`, formData, {
+          const response = await axios.put(`${API_ENDPOINT}/${id}`, formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
           });
           if (response.data.success) {
+            await get().getRestaurant();
             toast.success(response.data.message);
             set({ loading: false });
           }
@@ -94,21 +96,21 @@ export const useRestaurantStore = create<RestaurantState>()(
 
       addMenuToRestaurant: (menu: MenuItem) => {
         set((state: any) => ({
-          restaurant: state.restaurant
-            ? { ...state.restaurant, menu: [...state.restaurant.menus, menu] }
+          restaurants: state.restaurants
+            ? { ...state.restaurants, menu: [...state.restaurants.menus, menu] }
             : null,
         }));
       },
 
       updateMenuToRestaurant: async (updatedMenu: MenuItem) => {
         set((state: any) => {
-          if (state.restaurant) {
-            const updatedMenuList = state.restaurant.menu.map((menu: any) =>
+          if (state.restaurants) {
+            const updatedMenuList = state.restaurants.menu.map((menu: any) =>
               menu._id === updatedMenu._id ? updatedMenu : menu
             );
             return {
-              restaurant: {
-                ...state.restaurant,
+              restaurants: {
+                ...state.restaurants,
                 menus: updatedMenuList,
               },
             };
@@ -151,7 +153,7 @@ export const useRestaurantStore = create<RestaurantState>()(
             set({ restaurantOrder: response.data.orders });
           }
         } catch (error) {
-          console.log(error)
+          console.log(error);
         }
       },
 

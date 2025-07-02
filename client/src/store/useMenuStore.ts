@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { useRestaurantStore } from "./useRestaurant";
 
-const API_ENDPOINT = "https://foodie-76b5.onrender.com/api/v1/menu";
+const API_ENDPOINT = "http://localhost:8000/api/v1/menu";
 axios.defaults.withCredentials = true;
 
 type MenuState = {
@@ -29,9 +29,20 @@ export const useMenuStore = create<MenuState>()(
             },
           });
 
-          if (response.data.success) {
+          // if (response.data.success) {
+          //   toast.success(response.data.success);
+          //   set({ loading: false, menu: response.data.menu });
+          // }
+
+          if (response && response.data && response.data.success) {
             toast.success(response.data.success);
             set({ loading: false, menu: response.data.menu });
+            useRestaurantStore
+              .getState()
+              .addMenuToRestaurant(response.data.menu);
+          } else {
+            set({ loading: false });
+            toast.error("Failed to add menu.");
           }
 
           useRestaurantStore.getState().addMenuToRestaurant(response.data.menu);

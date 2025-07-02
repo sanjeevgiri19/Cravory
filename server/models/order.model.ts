@@ -13,6 +13,7 @@ type CartItems = {
   image: string;
   price: number;
   quantity: number;
+  restaurantId: string;
 };
 
 export interface IOrder extends Document {

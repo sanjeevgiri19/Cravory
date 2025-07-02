@@ -24,5 +24,5 @@ export type UserState = {
   logout: () => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
   resetPassword: (token: string, newPassword: string) => Promise<void>;
-  updateProfile: (input: Partial<User>) => Promise<void>;
+  updateProfile: (input: FormData | Partial<User>) => Promise<void>;
 };

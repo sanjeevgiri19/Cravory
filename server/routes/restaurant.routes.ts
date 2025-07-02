@@ -20,7 +20,7 @@ router
 router.route("/").get(isAuthenticated, getRestaurant);
 
 router
-  .route("/")
+  .route("/:id")
   .put(isAuthenticated, upload.single("imageFile"), updateRestaurant);
 
 router.route("/order").get(isAuthenticated, getRestaurantOrder);

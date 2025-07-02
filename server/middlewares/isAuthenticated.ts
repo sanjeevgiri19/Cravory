@@ -17,26 +17,32 @@ export const isAuthenticated = async (
   try {
     const token = req.cookies.token;
     if (!token) {
-       res.status(401).json({
+      res.status(401).json({
         success: false,
         message: "User not authenticated",
       });
+      return;
     }
 
-    const verifyToken = Jwt.verify(token, process.env.SECRET_KEY!) as Jwt.JwtPayload;
+    const verifyToken = Jwt.verify(
+      token,
+      process.env.SECRET_KEY!
+    ) as Jwt.JwtPayload;
 
     if (!verifyToken) {
-       res.status(401).json({
+      res.status(401).json({
         success: false,
         message: "Invalid token",
       });
+      return;
     }
 
     req.id = verifyToken.userId;
     next();
   } catch (error) {
-     res.status(500).json({
+    res.status(500).json({
       message: "Internal Server Error",
     });
+    return;
   }
 };

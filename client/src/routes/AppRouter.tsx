@@ -15,6 +15,8 @@ import Profile from "@/components/pages/Profile";
 import HeroSection from "@/components/pages/HeroSection";
 import MainLayout from "@/layout/MainLayout";
 import { createBrowserRouter } from "react-router-dom";
+import ExploreMenus from "@/components/pages/ExploreMenus";
+import MenuSearchPage from "@/components/pages/MenuSearchPage";
 
 export const appRouter = createBrowserRouter([
   {
@@ -50,7 +52,14 @@ export const appRouter = createBrowserRouter([
         path: "/order/status",
         element: <OrderSuccess />,
       },
-
+      {
+        path: "/expore-menus",
+        element: <ExploreMenus />,
+      },
+      {
+        path: "/menu/:foodName",
+        element: <MenuSearchPage />
+      },
       {
         path: "/admin/restaurant",
         element: (

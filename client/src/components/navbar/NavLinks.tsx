@@ -29,7 +29,7 @@ const NavLinks = () => {
         <Link to="/" className="text-lg">
           Home
         </Link>
-        <Link to="/order/status" className="text-lg ">
+        <Link to="/cart" className="text-lg ">
           Order
         </Link>
         <Link to="/profile" className="text-lg ">

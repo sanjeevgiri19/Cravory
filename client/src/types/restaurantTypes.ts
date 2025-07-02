@@ -26,14 +26,14 @@ export type SearchedRestaurant = {
 
 export type RestaurantState = {
   loading: boolean;
-  restaurant: Restaurant | null;
+  restaurants: Restaurant[] | null;
   searchedRestaurant: SearchedRestaurant | null;
   appliedFilter: string[];
   singleRestaurant: Restaurant | null;
   restaurantOrder: Orders[];
   createRestaurant: (formData: FormData) => Promise<void>;
   getRestaurant: () => Promise<void>;
-  updateRestaurant: (formData: FormData) => Promise<void>;
+  updateRestaurant: (id: string, formData: FormData) => Promise<void>;
   searchRestaurant: (
     searchText: string,
     searchQuery: string,

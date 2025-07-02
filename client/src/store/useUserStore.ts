@@ -3,12 +3,10 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import axios from "axios";
 import type { loginInputState, signupInputState } from "@/schema/userSchema";
 import { toast } from "sonner";
-import type { UserState } from "@/types/userTypes";
+import type { User, UserState } from "@/types/userTypes";
 
-const API_ENDPOINT = "https://foodie-76b5.onrender.com/api/v1/user";
+const API_ENDPOINT = "http://localhost:8000/api/v1/user";
 axios.defaults.withCredentials = true;
-
-
 
 export const useUserStore = create<UserState>()(
   persist(
@@ -160,14 +158,17 @@ export const useUserStore = create<UserState>()(
         }
       },
 
-      updateProfile: async (input: any) => {
+      updateProfile: async (input: FormData | Partial<User>) => {
         try {
+          const isFormData = input instanceof FormData;
           const response = await axios.put(
             `${API_ENDPOINT}/profile/update`,
             input,
             {
               headers: {
-                "Content-Type": "application/json",
+                "Content-Type": isFormData
+                  ? "multipart/form-data"
+                  : "application/json",
               },
             }
           );

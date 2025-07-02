@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import cloudinary from "../utils/cloudinary";
 import { generateToken } from "../utils/generateToken";
+import dotenv from "dotenv";
 import { generateVerificationCode } from "../utils/generateVerificationCode";
 import {
   sendPasswordResetEmail,
@@ -11,6 +12,8 @@ import {
   sendVerificationEmail,
   sendWelcomeEmail,
 } from "../mailtrap/email";
+
+dotenv.config();
 
 export const signUp = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -31,6 +34,8 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    const admin = email === process.env.ADMIN_EMAIL;
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const verificationToken = generateVerificationCode(); //6-digit verification token
 
@@ -39,15 +44,20 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
       email,
       password: hashedPassword,
       contact: Number(contact),
-      verificationToken,
-      verificationTokenExpiredAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      admin,
+      isVerified: !admin, //normal users are auto-verified
+      ...(admin && {
+        verificationToken,
+        verificationTokenExpiredAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      }),
     });
 
-    console.log(user);
-
+    // console.log(user);
     generateToken(res, user); //Generates jwt token
 
-    await sendVerificationEmail(email, verificationToken);
+    if (admin) {
+      await sendVerificationEmail(email, verificationToken);
+    }
 
     //send user w/o password
     const userWithoutPassword = await User.findOne({ email }).select(
@@ -78,6 +88,13 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    if (user.admin && !user.isVerified) {
+      res.status(403).json({
+        success: false,
+        message: "Admin email not verified.",
+      });
+      return;
+    }
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
       res.status(400).json({
@@ -262,11 +279,32 @@ export const updateProfile = async (
     const { username, email, address, city, country, profilePicture } =
       req.body;
 
+    const file = req.file;
     let cloudResponse;
-    if (profilePicture) {
-      cloudResponse = await cloudinary.uploader.upload(profilePicture, {
-        folder: "user_profiles",
-        public_id: `${userId}_${Date.now()}`,
+    if (file) {
+      cloudResponse = await cloudinary.uploader.upload_stream(
+        {
+          folder: "user_profiles",
+          public_id: `${userId}_${Date.now()}`,
+        },
+        (error, result) => {
+          if (error) throw error;
+          return result;
+        }
+      );
+      // But upload_stream is async, so you need to wrap it in a Promise:
+      cloudResponse = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            folder: "user_profiles",
+            public_id: `${userId}_${Date.now()}`,
+          },
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+          }
+        );
+        stream.end(file.buffer);
       });
     }
 
@@ -276,7 +314,7 @@ export const updateProfile = async (
       address,
       city,
       country,
-      profilePicture: cloudResponse?.secure_url,
+      profilePicture: (cloudResponse as any)?.secure_url,
     };
 
     const user = await User.findByIdAndUpdate(userId, updatedData, {

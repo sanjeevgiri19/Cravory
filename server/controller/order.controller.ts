@@ -42,11 +42,14 @@ export const createCheckOutSession = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  console.log("create cjeckout");
+  
   try {
     const checkoutSessionRequest: CheckoutSessionRequest = req.body;
     const restaurant = await Restaurant.findById(
       checkoutSessionRequest.restaurantId
     ).populate("menus");
+
     if (!restaurant) {
       res.status(404).json({
         success: false,
