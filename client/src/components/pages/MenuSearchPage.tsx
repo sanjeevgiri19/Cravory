@@ -8,7 +8,7 @@ const MenuSearchPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/v1/menu/all`)
+    fetch(`https://cravory-y3qu.onrender.com/v1/menu/all`)
       .then((res) => res.json())
       .then((data) => {
         // Filter menus by food name (case-insensitive)

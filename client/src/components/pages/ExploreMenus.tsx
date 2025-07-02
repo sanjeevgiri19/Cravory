@@ -23,7 +23,7 @@ const ExploreMenus = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/v1/menu/all")
+    fetch("https://cravory-y3qu.onrender.com/api/v1/menu/all")
       .then((res) => res.json())
       .then((data) => {
         setMenus(data.menus || []);
