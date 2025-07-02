@@ -13,16 +13,16 @@ import path from "path";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = Number(process.env.PORT)|| 8000;
 console.log("PORT", PORT);
-
 
 const _dirname = path.resolve();
 
-app.use(express.json());
+app.use(express.json({limit: "10mb"}));
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
+
 const corsOptions = {
   origin: process.env.FRONTEND_URI,
   credentials: true,
@@ -45,7 +45,7 @@ app.get("*", (_, res) => {
   res.sendFile(path.resolve(_dirname, "client", "dist", "index.html"));
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   connectDB();
   console.log(`Server connected at port ${PORT}`);
 });
