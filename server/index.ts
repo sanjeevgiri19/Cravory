@@ -30,9 +30,9 @@ app.use(helmet());
 const corsOptions = {
   origin: [
     // process.env.FRONTEND_URI,
-    "http://localhost:8000",
-    "http://localhost:5173",
-    // "https://cravory-y3qu.onrender.com",
+    // "http://localhost:8000",
+    // "http://localhost:5173",
+    "https://cravory-y3qu.onrender.com",
   ],
   credentials: true,
 };

@@ -4,8 +4,8 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { useRestaurantStore } from "./useRestaurant";
 
-// const API_ENDPOINT = "https://cravory-y3qu.onrender.com/api/v1/menu";
-const API_ENDPOINT = "http://localhost:8000/api/v1/menu";
+const API_ENDPOINT = "https://cravory-y3qu.onrender.com/api/v1/menu";
+// const API_ENDPOINT = "http://localhost:8000/api/v1/menu";
 axios.defaults.withCredentials = true;
 
 type MenuState = {
