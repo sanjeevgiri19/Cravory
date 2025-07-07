@@ -79,7 +79,7 @@ const VerifyEmail = () => {
               Please wait
             </Button>
           ) : (
-            <Button className=" mt-6 w-full">Verify</Button>
+            <Button className=" mt-6 w-full cursor-pointer">Verify</Button>
           )}
         </form>
       </div>

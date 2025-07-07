@@ -46,7 +46,7 @@ export const MobileNavbar = () => {
 
       <SheetContent className="flex flex-col">
         <SheetHeader className="flex flex-row items-center justify-between mt-6">
-          <SheetTitle>IXSN</SheetTitle>
+          <SheetTitle>Cravory</SheetTitle>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon">
@@ -138,7 +138,7 @@ export const MobileNavbar = () => {
                 Please wait
               </Button>
             ) : (
-              <Button onClick={logout} className="">
+              <Button onClick={logout} className="cursor-pointer">
                 Logout
               </Button>
             )}

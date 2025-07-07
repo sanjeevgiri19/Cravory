@@ -32,13 +32,11 @@ const ResetPassword = () => {
             <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
           </Button>
         ) : (
-          <Button className="">
-            Reset Password
-          </Button>
+          <Button className="">Reset Password</Button>
         )}
         <span className="text-center">
           Back to{" "}
-          <Link to="/login" className="text-blue-500">
+          <Link to="/login" className="text-blue-500 cursor-pointer">
             Login
           </Link>
         </span>

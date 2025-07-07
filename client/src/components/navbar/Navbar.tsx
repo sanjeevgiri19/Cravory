@@ -7,7 +7,7 @@ const Navbar = () => {
     <div className="max-w-7xl mx-auto">
       <div className="flex items-center justify-between h-16">
         <Link to="/">
-          <h1 className="font-semibold md:font-semibold text-2xl px-2">IXSN</h1>
+          <h1 className="font-semibold md:font-semibold text-2xl px-2">Cravory</h1>
         </Link>
 
         <NavLinks />

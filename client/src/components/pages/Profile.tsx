@@ -176,7 +176,7 @@ const Profile = () => {
         ) : (
           <Button
             type="submit"
-            className="bg-blue-400 px-20  md:text-lg md:font-semibold  "
+            className="bg-blue-400 px-20  md:text-lg md:font-semibold cursor-pointer "
           >
             Update
           </Button>

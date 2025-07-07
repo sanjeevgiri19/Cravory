@@ -120,7 +120,7 @@ const Signup = () => {
           ) : (
             <Button
               type="submit"
-              className="bg-gray-700 hover:bg-gray-800 w-[90%] "
+              className="bg-gray-700 cursor-pointer hover:bg-gray-800 w-[90%] "
             >
               Signup
             </Button>
@@ -129,7 +129,7 @@ const Signup = () => {
         <Separator />
         <p className="mt-4">
           Already have an Account ?{" "}
-          <Link to="/login" className="text-blue-600 font-semibold">
+          <Link to="/login" className="text-blue-600 cursor-pointer font-semibold">
             Login
           </Link>
         </p>

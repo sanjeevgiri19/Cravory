@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const ForgotPassword = () => {
   const [email, setEmail] = useState<string>("");
   const loading = false;
-  
+
   return (
     <div className="flex justify-center items-center min-h-screen w-full">
       <form className="md:border flex flex-col border-gray-400 md:p-4 rounded-lg gap-5 w-full max-w-md mx-14">
@@ -45,7 +45,10 @@ const ForgotPassword = () => {
 
         <span className="text-center">
           Back to{" "}
-          <Link to="/login" className="hover:underline text-blue-500">
+          <Link
+            to="/login"
+            className="hover:underline text-blue-500 cursor-pointer"
+          >
             Login
           </Link>
         </span>

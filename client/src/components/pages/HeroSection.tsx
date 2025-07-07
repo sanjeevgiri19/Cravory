@@ -2,6 +2,7 @@ import { Search } from "lucide-react";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FlowingMenu from "../FlowingMenu";
+// import ExploreMenus from "./ExploreMenus";
 
 const foodItems = [
   {
@@ -39,6 +40,13 @@ const foodItems = [
       "https://th.bing.com/th/id/OIP.YMN82sIVYM7wbyj0ElJ3uwHaFh?w=258&h=192&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3",
     description: "Warm, gooey, and utterly delicious.",
   },
+  {
+    link: "/menu/dessert",
+    foodName: "Chocolate Lava Cake",
+    image:
+      "https://th.bing.com/th/id/OIP.YMN82sIVYM7wbyj0ElJ3uwHaFh?w=258&h=192&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3",
+    description: "Warm, gooey, and utterly delicious.",
+  },
 ];
 
 const HeroSection: React.FC = () => {
@@ -66,11 +74,13 @@ const HeroSection: React.FC = () => {
             <div className="w-full lg:w-1/2 text-left">
               <div className="bg-gray-400/70 px-2 rounded-full flex items-center justify-center py-1 w-56">
                 <p className="text-sm uppercase tracking-wider font-medium text-gray-50">
-                  Welcome to The IXSN
+                  Welcome to The Cravory
                 </p>
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
-                The Famous <br className="hidden sm:block" /> Food App
+                Cravings Met,
+                <br className="hidden sm:block" />
+                Moments Made.
               </h1>
               <p className="text-gray-200 text-base sm:text-lg mb-8">
                 Craving something tasty? Explore our mouthwatering menu of
@@ -109,7 +119,7 @@ const HeroSection: React.FC = () => {
               />
               <button
                 onClick={handleSearch}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full transition duration-300"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-orange-500 hover:bg-orange-600 cursor-pointer text-white px-6 py-2 rounded-full transition duration-300"
               >
                 Search
               </button>
